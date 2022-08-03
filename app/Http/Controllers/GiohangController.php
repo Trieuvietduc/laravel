@@ -7,6 +7,7 @@ use App\Models\Donhang;
 use App\Models\Giohang;
 use App\Models\Product;
 use ArrayObject;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Undefined;
@@ -145,7 +146,13 @@ class GiohangController extends Controller
                 'id_user' => Auth::user()->id,
             ]);
             $detai->save();
+            $product = Product::where('id', $value->id_product)->get();
+            foreach ($product as $item) {
+                $item->so_luong -= $value->so_luong;
+                $item->save();
+            }
         }
+
 
         foreach ($giohang as $item) {
             Giohang::destroy($item->id);
