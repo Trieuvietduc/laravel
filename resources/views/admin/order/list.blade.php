@@ -41,10 +41,10 @@
                             <td>{{ $item->note }}</td>
                             <td>{{ $item->price_order }}</td>
                             <td>
-                                <form action="" method="get">
+                                <form action="{{ route('status_order', $item) }}" method="get">
                                     <select name="status">
                                         @foreach ($status as $value)
-                                            <option value="{{ $item->id_status }}"
+                                            <option value="{{ $value->id }}"
                                                 {{ $value->id == $item->id_status ? 'selected' : '' }}>{{ $value->name }}
                                             </option>
                                         @endforeach
@@ -59,6 +59,9 @@
                 </tbody>
             </table>
             </form>
+        </div>
+        <div style="margin-left: 1000px">
+            {{ $donhang->links() }}
         </div>
     </div>
 @endsection

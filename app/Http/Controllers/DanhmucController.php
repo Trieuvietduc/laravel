@@ -23,31 +23,24 @@ class DanhmucController extends Controller
     }
     public function fill_danhmuc(Request $request)
     {
-        $id = 2;
         $danhmuc = Danhmuc::all();
         $kichthuoc = Kichthuoc::all();
-        $j = 2;
-        $fill_danhmuc = Product::where('id_danhmuc', $request->id)->with('danhmuc')->get();
-        if(Auth::user()){
-            $count_giohang = Giohang::where('id_user',Auth::user()->id)->get();
+        $fill_danhmuc = Product::where('id_danhmuc', $request->id)->with('danhmuc')->paginate(10);
+        if (Auth::user()) {
+            $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
             return view('clinet.san-pham', [
                 'danhmuc' => $danhmuc,
-                'fill_danhmuc' => $fill_danhmuc,
+                'product' => $fill_danhmuc,
                 'kichthuoc' => $kichthuoc,
-                'id' => $id,
-                'j' => $j,
-                'count_giohang' => $count_giohang,
+                'count_giohang' => $count_giohang
             ]);
-        }else{
+        } else {
             return view('clinet.san-pham', [
                 'danhmuc' => $danhmuc,
-                'fill_danhmuc' => $fill_danhmuc,
-                'kichthuoc' => $kichthuoc,
-                'id' => $id,
-                'j' => $j
+                'product' => $fill_danhmuc,
+                'kichthuoc' => $kichthuoc
             ]);
         }
-        
     }
     public function list()
     {
@@ -64,22 +57,25 @@ class DanhmucController extends Controller
     {
         $danhmuc = new Danhmuc();
         $danhmuc->fill([
-            'name'=> $request->name
+            'name' => $request->name
         ])->save();
-        return redirect()->route('danhmuc_list')->with('thongbao','Thêm danh mục thành công');
+        return redirect()->route('danhmuc_list')->with('thongbao', 'Thêm danh mục thành công');
     }
-    public function edit(Request $request){
-        $danhmuc = Danhmuc::where('id',$request->id)->first();
-        return view('admin.danhmuc.edit',[
-            'danhmuc'=>$danhmuc
+    public function edit(Request $request)
+    {
+        $danhmuc = Danhmuc::where('id', $request->id)->first();
+        return view('admin.danhmuc.edit', [
+            'danhmuc' => $danhmuc
         ]);
     }
-    public function update(Request $request){
-         Danhmuc::find($request->id)->update($request->all());
-        return redirect()->route('danhmuc_list')->with('thongbao','Sửa danh mục thành công');
+    public function update(Request $request)
+    {
+        Danhmuc::find($request->id)->update($request->all());
+        return redirect()->route('danhmuc_list')->with('thongbao', 'Sửa danh mục thành công');
     }
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         Danhmuc::destroy($request->id);
-        return redirect()->route('danhmuc_list')->with('thongbao','Xóa  danh mục thành công');
+        return redirect()->route('danhmuc_list')->with('thongbao', 'Xóa  danh mục thành công');
     }
 }

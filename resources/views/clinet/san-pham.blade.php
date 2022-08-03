@@ -50,15 +50,7 @@
                             <div class="col-12">
                                 <div class="product-topbar d-flex align-items-center justify-content-between">
                                     <div class="total-products">
-
-                                        @if ($id == null)
-                                            <p><span>{{ count($product) }}</span> Sản phẩm</p>
-                                        @elseif($id == 2)
-                                            <p><span>{{ count($fill_danhmuc) }}</span> Sản phẩm</p>
-                                        @elseif ($j == 1)
-                                            <p><span>{{ count($fill_kichthuoc) }}</span> Sản phẩm</p>
-                                        @endif
-
+                                        <p><span>{{ count($product) }}</span> Sản phẩm</p>
                                     </div>
                                     <div class="product-sorting d-flex">
                                         <p>Sắp xếp</p>
@@ -75,132 +67,50 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
-                            @if ($id == 2)
-                                @foreach ($fill_danhmuc as $item)
-                                    <div class="col-12 col-sm-6 col-lg-4">
-                                        <div class="single-product-wrapper">
-                                            <form action="{{ route('giohang_create', $item) }}" method="POST">
-                                                @csrf
-                                                <div class="product-img">
-                                                    <img src="{{ asset($item->avatar_product) }}" alt=""
-                                                        style="height: 250px;width: 250px;">
+                            @foreach ($product as $item)
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <div class="single-product-wrapper">
+                                        <form action="{{ route('giohang_create', $item) }}" method="post">
+                                            @csrf
+                                            <div class="product-img">
+                                                <img src="{{ asset($item->avatar_product) }}" alt=""
+                                                    style="height: 250px;width: 250px;">
 
-                                                    <div class="product-favourite">
-                                                        <a href="#" class="favme fa fa-heart"></a>
+                                                <div class="product-favourite">
+                                                    <a href="#" class="favme fa fa-heart"></a>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="so_luong" value="1">
+                                            <div class="product-description" style="text-align: center">
+                                                <span>{{ $item->danhmuc->name }}</span>
+                                                <a href="{{ route('sanpham_detail', $item->id) }}">
+                                                    <h6>{{ $item->name }}</h6>
+                                                </a>
+                                                @if ($item->khuyen_mai != null)
+                                                    <p class="product-price"><span class="old-price">
+                                                            {{ number_format($item->don_gia, 0, ',', '.') }}đ</span>
+                                                        {{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</p>
+                                                @else
+                                                    <p class="product-price">
+                                                        {{ number_format($item->don_gia, 0, ',', '.') }}đ</p>
+                                                @endif
+
+
+                                                <div class="hover-content">
+                                                    <div class="add-to-cart-btn" style="text-align: center">
+                                                        <button class="btn btn-danger">Thêm vào giỏ hàng</button>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="so_luong" value="1">
-                                                <div class="product-description" style="text-align: center">
-                                                    <span>{{$item->danhmuc->name}}</span>
-                                                    <a href="{{ route('sanpham_detail', $item->id) }}">
-                                                        <h6>{{ $item->name }}</h6>
-                                                    </a>
-                                                    @if ($item->khuyen_mai != null)
-                                                        <p class="product-price"><span class="old-price">
-                                                                {{ number_format($item->don_gia, 0, ',', '.') }}đ</span>
-                                                            {{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</p>
-                                                    @else
-                                                        <p class="product-price">
-                                                            {{ number_format($item->don_gia, 0, ',', '.') }}đ</p>
-                                                    @endif
-
-
-                                                    <div class="hover-content">
-                                                        <div class="add-to-cart-btn">
-                                                            <button class="btn btn-danger">Thêm vào giỏ hàng</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                @endforeach
-                            @elseif($id == null)
-                                @foreach ($product as $item)
-                                    <div class="col-12 col-sm-6 col-lg-4">
-                                        <div class="single-product-wrapper">
-                                            <form action="{{ route('giohang_create', $item) }}" method="post">
-                                                @csrf
-                                                <div class="product-img">
-                                                    <img src="{{ asset($item->avatar_product) }}" alt=""
-                                                        style="height: 250px;width: 250px;">
-
-                                                    <div class="product-favourite">
-                                                        <a href="#" class="favme fa fa-heart"></a>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="so_luong" value="1">
-                                                <div class="product-description" style="text-align: center">
-                                                    <span>{{$item->danhmuc->name}}</span>
-                                                    <a href="{{ route('sanpham_detail', $item->id) }}">
-                                                        <h6>{{ $item->name }}</h6>
-                                                    </a>
-                                                    @if ($item->khuyen_mai != null)
-                                                        <p class="product-price"><span class="old-price">
-                                                                {{ number_format($item->don_gia, 0, ',', '.') }}đ</span>
-                                                            {{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</p>
-                                                    @else
-                                                        <p class="product-price">
-                                                            {{ number_format($item->don_gia, 0, ',', '.') }}đ</p>
-                                                    @endif
-
-
-                                                    <div class="hover-content">
-                                                        <div class="add-to-cart-btn" style="text-align: center">
-                                                            <button class="btn btn-danger">Thêm vào giỏ hàng</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @elseif($j == 1)
-                                @foreach ($fill_kichthuoc as $item)
-                                    <div class="col-12 col-sm-6 col-lg-4">
-                                        <div class="single-product-wrapper">
-                                            <form action="{{ route('giohang_create', $item) }}" method="post">
-                                                @csrf
-                                                <div class="product-img">
-                                                    <img src="{{ asset($item->avatar_product) }}" alt=""
-                                                        style="height: 250px;width: 250px;">
-
-                                                    <div class="product-favourite">
-                                                        <a href="#" class="favme fa fa-heart"></a>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="so_luong" value="1">
-                                                <div class="product-description" style="text-align: center">
-                                                    <span>{{$item->danhmuc->name}}</span>
-                                                    <a href="{{ route('sanpham_detail', $item->id) }}">
-                                                        <h6>{{ $item->name }}</h6>
-                                                    </a>
-                                                    @if ($item->khuyen_mai != null)
-                                                        <p class="product-price"><span class="old-price">
-                                                                {{ number_format($item->don_gia, 0, ',', '.') }}đ</span>
-                                                            {{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</p>
-                                                    @else
-                                                        <p class="product-price">
-                                                            {{ number_format($item->don_gia, 0, ',', '.') }}đ</p>
-                                                    @endif
-
-                                                    <div class="hover-content">
-                                                        <!-- Add to Cart -->
-                                                        <div class="add-to-cart-btn">
-                                                            <button class="btn btn-danger">Thêm vào giỏ hàng</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <nav aria-label="navigation">
+                        {{ $product->links() }}
                     </nav>
                 </div>
             </div>

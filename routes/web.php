@@ -11,10 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckAccountLogin;
 use App\Http\Middleware\CheckAdmin;
-use App\Models\Danhmuc;
-use App\Models\Donhang;
 use App\Models\Giohang;
-use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,10 +30,24 @@ use Illuminate\Support\Facades\Route;
 // client
 // index
 Route::get('/', [ProductController::class, 'index'])->name('index');
-
+// error
+Route::get('error', function () {
+    if (Auth::user()) {
+        $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
+        return view('clinet.error', [
+            'count_giohang' => $count_giohang
+        ]);
+    } else {
+        return view('clinet.error');
+    }
+})->name('error');
+// search index
+Route::get('search', [HomeController::class, 'search'])->name('search_home');
 // login
 Route::get('login', [LoginController::class, 'login'])->name('login')->middleware('guest');
 Route::post('check-login', [LoginController::class, 'checklogin'])->name('checklogin')->middleware('guest');
+Route::get('check-pasword', [LoginController::class, 'checkpassword'])->name('check_pasword')->middleware('guest');
+Route::post('check-pasword', [LoginController::class, 'checkpasswordreset'])->name('check_pasword_reset')->middleware('guest');
 
 // register
 Route::get('register', [LoginController::class, 'register'])->name('register')->middleware('guest');
@@ -62,7 +73,7 @@ Route::prefix('san-pham')->group(function () {
     // lọc theo kích thước
     Route::get('/kich-thuoc/{id}', [ProductController::class, 'kichthuoc'])->name('kichthuoc');
     // sản phẩm
-    Route::get('/', [ProductController::class, 'sanpham']);
+    Route::get('/', [ProductController::class, 'sanpham'])->name('sanpham');
     // chi tiết sản phẩm
     Route::get('/detail/{id}', [ProductController::class, 'detai'])->name('sanpham_detail');
 });
@@ -143,6 +154,6 @@ Route::middleware([CheckAccountLogin::class])->middleware([CheckAdmin::class])->
     Route::get('/don-hang/detai/{id}', [DonhangController::class, 'detaiorder'])->name('detai_order_user');
     Route::get('/don-hang/status/{donhang}', [DonhangController::class, 'statusorder'])->name('status_order');
     // thống kê
-    Route::get('thongke/order',[HomeController::class,'allorder'])->name('orderall');
-    Route::get('thongke/order/complete/{id}',[HomeController::class,'complete'])->name('complete');
+    Route::get('thongke/order', [HomeController::class, 'allorder'])->name('orderall');
+    Route::get('thongke/order/complete', [HomeController::class, 'complete'])->name('complete');
 });

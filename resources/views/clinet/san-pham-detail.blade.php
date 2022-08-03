@@ -72,6 +72,7 @@
     <div class="container">
         <h4>Bình luận</h4>
     </div>
+    <br>
     <div class="container ketqua" id="ketqua">
         @foreach ($binhluan as $item)
             <div class="media">

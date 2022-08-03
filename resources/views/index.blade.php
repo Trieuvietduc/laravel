@@ -152,8 +152,8 @@
                                                             {{ number_format($item->don_gia, 0, ',', '.') }}đ<span>{{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</span>
                                                         </div>
                                                     </div>
-                                                    <button class="red_button add_to_cart_button"
-                                                        style="border: 1px solid red">Thêm vào giỏ hàng</button>
+                                                    <div class="red_button add_to_cart_button"><button class="red_button add_to_cart_button" style="border:1px solid red">Thêm vào giỏ hàng</button></div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

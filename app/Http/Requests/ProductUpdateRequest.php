@@ -24,16 +24,13 @@ class ProductUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            "don_gia" => "numeric|between:0,99|regex:/^\d+(,\d{1,2})?$/"
-            
+            "don_gia" => "numeric"
         ];
     }
     public function messages()
     {
         return [
             'don_gia.numeric' => 'giá bắt buộc phải là số',
-            'don_gia.between' => 'giá không đúng định dạng',
-            'don_gia.regex' => 'giá không đúng định dạng',
         ];
     }
 }

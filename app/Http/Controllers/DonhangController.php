@@ -13,8 +13,8 @@ class DonhangController extends Controller
 {
     public function list()
     {
-        $donhang = Donhang::select('*')->with('status')->get();
-        $status = Status::select('*')->with('order')->get();
+        $donhang = Donhang::select('*')->paginate(6);
+        $status = Status::select('*')->get();
         return view('admin.order.list', [
             'donhang' => $donhang,
             'status' => $status
@@ -36,24 +36,12 @@ class DonhangController extends Controller
             'detai' => $detai
         ]);
     }
-    // public function statusorder(Request $request, Donhang $donhang)
-    // {
-    //     dd($request->status);
-    //     $donhang = Donhang::select('id_status')->where('id', $request->id_status)->first();
-
-    //     $donhang->fill(
-    //         [
-    //             'name' => $donhang->name,
-    //             'email' => $donhang->email,
-    //             'sdt' => $donhang->sdt,
-    //             'address' => $donhang->address,
-    //             'price_order' => $donhang->note,
-    //             'id_status' => $request->id_status,
-    //             'id_user' => $donhang->id_user,
-    //         ]
-    //     )->save();
-    //     return back();
-    // }
+    public function statusorder(Request $request, Donhang $donhang)
+    {
+        $donhang->id_status = $request->status;
+        $donhang->save();
+        return back();
+    }
     public function detaiorderstatus(Request $request)
     {
         $donhang = Donhang::where('id', $request->id)->first();
@@ -79,7 +67,7 @@ class DonhangController extends Controller
         if ($donhang->id_status == 1) {
             return back()->with('error', 'đơn hàng này chưa vận chuyển nên bạn không thể bấm thành công');
         }
-        
+
         if ($donhang->id_status == 3) {
             return back()->with('thongbao', 'đơn hàng này đã thành công rồi');
         }

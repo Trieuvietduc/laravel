@@ -44,18 +44,18 @@
     <script>
         function add(event, id) {
             event.preventDefault();
-            var url = '';
+            var url = "";
             if (id == 1) {
-                url = 'http://127.0.0.1:8000/dashboard/thongke/order/complete/' + id + ''
+                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
             }
-            if(id == 2) {
-                url = 'http://127.0.0.1:8000/dashboard/thongke/order/complete/' + id + ''
+            if (id == 2) {
+                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
             }
-            if(id == 3) {
-                url = 'http://127.0.0.1:8000/dashboard/thongke/order/complete/' + id + ''
+            if (id == 3) {
+                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
             }
-            if(id == 4) {
-                url = 'http://127.0.0.1:8000/dashboard/thongke/order/complete/' + id + ''
+            if (id == 4) {
+                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
             }
             $.ajax({
                 url: url,

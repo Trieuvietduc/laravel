@@ -15,79 +15,62 @@ class ProductController extends Controller
 {
     public function index()
     {
+
+        $danhmuc = Danhmuc::select('id', 'name')->get();
+        $product =  Product::all();
         if (Auth::user()) {
             $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
-            $danhmuc = Danhmuc::select('id', 'name')->get();
-
-            $product =  Product::all();
             return view('index', [
                 'danhmuc' => $danhmuc,
                 'product' => $product,
                 'count_giohang' => $count_giohang,
-
             ]);
         } else {
-            $danhmuc = Danhmuc::select('id', 'name')->get();
-            $product =  Product::all();
             return view('index', [
                 'danhmuc' => $danhmuc,
                 'product' => $product,
-
-
             ]);
         }
     }
     public function sanpham()
     {
         $danhmuc = Danhmuc::select('id', 'name')->get();
-        $product =  Product::all();
+        $product =  Product::paginate(10);
         $kichthuoc = Kichthuoc::all();
-        $id = null;
-        $j = null;
         if (Auth::user()) {
             $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
             return view('clinet.san-pham', [
                 'product' => $product,
                 'danhmuc' => $danhmuc,
-                'id' => $id,
                 'kichthuoc' => $kichthuoc,
-                'j' => $j,
                 'count_giohang' => $count_giohang,
             ]);
         } else {
             return view('clinet.san-pham', [
                 'product' => $product,
                 'danhmuc' => $danhmuc,
-                'id' => $id,
                 'kichthuoc' => $kichthuoc,
-                'j' => $j,
             ]);
         }
     }
     public function kichthuoc(Request $request)
     {
-        $id = 1;
-        $j = 1;
         $kichthuoc = Kichthuoc::all();
         $danhmuc = Danhmuc::select('id', 'name')->get();
-        $fill_kichthuoc = Product::where('kich_thuoc', $request->id)->with('danhmuc')->get();
+        $fill_kichthuoc = Product::where('kich_thuoc', $request->id)->with('danhmuc')->paginate(10);
         if (Auth::user()) {
             $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
             return view('clinet.san-pham', [
                 'danhmuc' => $danhmuc,
-                'fill_kichthuoc' => $fill_kichthuoc,
+                'product' => $fill_kichthuoc,
                 'kichthuoc' => $kichthuoc,
-                'j' => $j,
-                'id' => $id,
                 'count_giohang' => $count_giohang
             ]);
         } else {
             return view('clinet.san-pham', [
                 'danhmuc' => $danhmuc,
-                'fill_kichthuoc' => $fill_kichthuoc,
+                'product' => $fill_kichthuoc,
                 'kichthuoc' => $kichthuoc,
-                'j' => $j,
-                'id' => $id
             ]);
         }
     }

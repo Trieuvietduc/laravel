@@ -82,8 +82,8 @@
                         <a href="#">ĐỨC<span>shop</span></a>
                     </div>
                     <nav class="navbar">
-                        <form action="" method="get" class="form">
-                            <input type="text" name="search" id="" class="" style="height: 35px;">
+                        <form action="{{route('search_home')}}" method="get" class="form">
+                            <input type="text" name="result" id="" class="" style="height: 35px;">
                             <button class="btn btn-warning" style="height: 35px;">Tìm kiếm</button>
                         </form>
                         <ul class="navbar_menu">

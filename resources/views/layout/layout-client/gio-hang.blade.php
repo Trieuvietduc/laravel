@@ -41,7 +41,8 @@
                                         <i class="fa fa-angle-down"></i>
                                     </a>
                                     <ul class="account_selection">
-                                        <li><a href="#"><i class="fa-solid fa-address-card"></i>Profile</a></li>
+                                        <li><a href="{{ route('detail_order') }}"><i
+                                                    class="fa-solid fa-address-card"></i>đơn hàng</a></li>
                                         <li><a href="{{ route('logout') }}"><i class="fa fa-sign-in"
                                                     aria-hidden="true"></i>logout</a>
                                         </li>
@@ -78,25 +79,25 @@
             <div class="row">
                 <div class="col-lg-12 text-right">
                     <div class="logo_container">
-                        <a href="#">colo<span>shop</span></a>
+                        <a href="#">Đức<span>shop</span></a>
                     </div>
                     <nav class="navbar">
+                        <form action="{{ route('search_home') }}" method="get" class="form">
+                            <input type="text" name="result" id="" class="" style="height: 35px;">
+                            <button class="btn btn-warning" style="height: 35px;">Tìm kiếm</button>
+                        </form>
                         <ul class="navbar_menu">
                             <li><a href="/">Trang chủ</a></li>
                             <li><a href="../../san-pham">Sản phẩm</a></li>
                             <li><a href="../../lien-he"> Liên hệ</a></li>
                         </ul>
                         <ul class="navbar_user">
-                            <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                             <li class="checkout">
                                 <a href="{{ route('cart') }}">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                     @if (Auth::user())
                                         <span id="checkout_items"
                                             class="checkout_items">{{ count($count_giohang) }}</span>
-                                    @else
-                                        <span id="checkout_items" class="checkout_items"></span>
                                     @endif
                                 </a>
                             </li>

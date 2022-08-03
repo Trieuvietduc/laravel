@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Danhmuc;
 use App\Models\Donhang;
+use App\Models\Giohang;
+use App\Models\Kichthuoc;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -43,6 +47,37 @@ class HomeController extends Controller
             return Donhang::where('id_status', 1)->with('status')->get();
         } elseif ($request->id == 4) {
             return Donhang::select('*')->with('status')->get();
+        }
+    }
+    public function search(Request $request)
+    {
+        $danhmuc = Danhmuc::all();
+        $kichthuoc = Kichthuoc::all();
+        if (empty($request->result)) {
+            return redirect()->route('sanpham');
+        } else {
+            $product = Product::select('*')->where('name', 'like', '%' . $request->result . '%')->paginate(10);
+            if (empty($product->all())) {
+                return redirect()->route('error');
+            } else {
+                if (Auth::user()) {
+                    $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
+                    return view('clinet.san-pham', [
+                        'product' => $product,
+                        'danhmuc' => $danhmuc,
+                        'kichthuoc' => $kichthuoc,
+                        'count_giohang' => $count_giohang,
+                       
+                    ]);
+                } else {
+                    return view('clinet.san-pham', [
+                        'product' => $product,
+                        'danhmuc' => $danhmuc,
+                        'kichthuoc' => $kichthuoc,
+                        
+                    ]);
+                }
+            }
         }
     }
 }
