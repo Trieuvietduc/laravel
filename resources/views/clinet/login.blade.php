@@ -69,8 +69,8 @@
                         <div class="social d-flex">
                             <a href="#" class="px-2 py-2 mr-md-1 rounded"><span
                                     class="ion-logo-facebook mr-2"></span> Facebook</a>
-                            <a href="#" class="px-2 py-2 ml-md-1 rounded"><span
-                                    class="ion-logo-twitter mr-2"></span> Twitter</a>
+                            <a href="{{route('getlogin')}}" class="px-2 py-2 ml-md-1 rounded"><span
+                                    class="ion-logo-twitter mr-2"></span> Google</a>
                             <a href="{{ route('register') }}" class="px-2 py-2 ml-md-1 rounded"><span
                                     class="ion-logo-twitter mr-2">Đăng ký</span></a>
                         </div>

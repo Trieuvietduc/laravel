@@ -41,7 +41,7 @@
                             <div class="form-group col-sm-6 flex-column d-flex"> <label
                                     class="form-control-label px-3">Khuyễn mại<span class="text-danger">
                                         *</span></label> <input type="text" id="khuyen_mai" name="khuyen_mai"
-                                    placeholder="" onblur="validate(3)" value="{{ $product->khuyen_mai }}">
+                                    placeholder="" value="{{ $product->khuyen_mai }}">
                                 <span id="error_khuyenmai"></span>
                             </div>
                             <div class="form-group col-sm-6 flex-column d-flex"><label class="form-control-label px-3">số
@@ -94,16 +94,15 @@
                             </div>
                         </div>
                         <div class="row justify-content-end">
-                            <div class="form-group col-sm-6"> <button type="button" class="btn-block btn-primary"
-                                    onclick="add()">Thêm sản
-                                    Phẩm</button> </div>
+                            <div class="form-group col-sm-6">
+                                 <button type="submit" class="btn-block btn-primary">Thêm sản Phẩm</button> </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/create.js') }}"></script>
+    {{-- <script src="{{ asset('js/create.js') }}"></script> --}}
 
 
 @endsection

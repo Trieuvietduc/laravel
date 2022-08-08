@@ -19,7 +19,8 @@ class CheckAdmin
     {
         if (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status == 1) {
             return $next($request);
+        } else {
+            return redirect()->route('index');
         }
-        return redirect()->route('index');
     }
 }

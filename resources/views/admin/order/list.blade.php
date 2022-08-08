@@ -53,7 +53,7 @@
                                 </form>
 
                             </td>
-                            <td><a href="{{ route('detai_order_user', $item->id_user) }}">chi tiết đơn hàng</a></td>
+                            <td><a href="{{ route('detai_order_user', $item->id) }}">chi tiết đơn hàng</a></td>
                         </tr>
                     @endforeach
                 </tbody>

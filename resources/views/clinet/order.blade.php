@@ -134,7 +134,8 @@
                 padding-left: 0
             }
         }
-        span{
+
+        span {
             color: red
         }
     </style>
@@ -177,6 +178,8 @@
                                                 id="address" aria-describedby="helpId" placeholder="">
                                             <span id="error_address"></span>
                                         </div>
+                                        <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
+                                        <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
                                         <div class="form-group">
                                             <label for="NAME" class="small text-muted mb-1">SỐ ĐIỆN THOẠI</label>
                                             <input type="text" class="form-control form-control-sm" name="sdt"
@@ -192,7 +195,8 @@
 
                                         <div class="row mb-5 mt-4 ">
                                             <div class="col-md-7 col-lg-6 mx-auto">
-                                                <button type="submit" class="btn btn-block btn-outline-primary btn-lg">ĐẶT HÀNG</button>
+                                                <button type="submit" class="btn btn-block btn-outline-primary btn-lg">ĐẶT
+                                                    HÀNG</button>
                                             </div>
                                         </div>
 

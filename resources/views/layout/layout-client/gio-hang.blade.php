@@ -41,7 +41,7 @@
                                         <i class="fa fa-angle-down"></i>
                                     </a>
                                     <ul class="account_selection">
-                                        <li><a href="{{ route('detail_order') }}"><i
+                                        <li><a href="{{ route('view_detai') }}"><i
                                                     class="fa-solid fa-address-card"></i>đơn hàng</a></li>
                                         <li><a href="{{ route('logout') }}"><i class="fa fa-sign-in"
                                                     aria-hidden="true"></i>logout</a>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Detaiorder;
 use App\Models\Donhang;
 use App\Models\Giohang;
+use App\Models\Product;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class DonhangController extends Controller
 {
     public function list()
     {
-        $donhang = Donhang::select('*')->paginate(6);
+        $donhang = Donhang::Orderby('created_at','DESC')->select('*')->paginate(6);
         $status = Status::select('*')->get();
         return view('admin.order.list', [
             'donhang' => $donhang,
@@ -22,7 +23,7 @@ class DonhangController extends Controller
     }
     public function detaiorder(Request $request)
     {
-        $detai = Detaiorder::where('id_user', $request->id)->get();
+        $detai = Detaiorder::where('id_order_detai', $request->id)->get();
         return view('admin.order.detai-order', [
             'detai' => $detai
         ]);
@@ -30,7 +31,7 @@ class DonhangController extends Controller
     public function detaiorderusser(Request $request)
     {
         $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
-        $detai = Detaiorder::where('id_user', $request->id)->get();
+        $detai = Detaiorder::where('id_order_detai', $request->id)->get();
         return view('clinet.detai-order-user', [
             'count_giohang' => $count_giohang,
             'detai' => $detai
@@ -45,6 +46,7 @@ class DonhangController extends Controller
     public function detaiorderstatus(Request $request)
     {
         $donhang = Donhang::where('id', $request->id)->first();
+
         if ($donhang->id_status == 4) {
             return back()->with('error', 'đơn hàng này đã hủy rồi');
         }
@@ -56,6 +58,12 @@ class DonhangController extends Controller
         }
         $donhang->id_status = 4;
         $donhang->save();
+        $fisrt = Detaiorder::where('id_user', $donhang->id_user)->get();
+        foreach ($fisrt as $item) {
+            $product = Product::where('id', $item->id_product)->first();
+            $product->so_luong += $item->so_luong_product;
+            $product->save();
+        }
         return back()->with('thongbao', 'hủy thành công đơn hàng');
     }
     public function detaiorderstatustrue(Request $request)

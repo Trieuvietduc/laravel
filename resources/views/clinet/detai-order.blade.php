@@ -190,7 +190,7 @@
                                                     <p class="text-muted mb-2">số điện thoại : {{ $item->sdt }}</p>
                                                     <p class="text-muted mb-2">địa chỉ: {{ $item->address }}</p>
                                                     <p class="text-muted mb-2">ghi chú : {{ $item->note }}</p>
-                                                    <a href="{{ route('view_detai_user', $item->id_user) }}">
+                                                    <a href="{{ route('view_detai_user', $item->id) }}">
                                                         <p class="text-muted mb-2"><b>Xem chi tiết đơn hàng</b></p>
                                                     </a>
                                                 </div>

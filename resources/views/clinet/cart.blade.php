@@ -71,18 +71,15 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ route('check_order') }}" method="post">
-                @csrf
                 <div class="">
                     <div class="cart__total__procced">
                         <h6>TỔNG GIỎ HÀNG</h6>
                         <ul>
                             <li>Tổng tất cả <span>{{ number_format($totalall, 0, ',', '.') }}đ</span></li>
                         </ul>
-                        <button class="btn btn-warning">tiếp tục</button>
+                        <button class="btn btn-warning"><a href="{{ route('check_order') }}">Tiếp tục</a> </button>
                     </div>
                 </div>
-            </form>
         </div>
     </section>
 @endsection

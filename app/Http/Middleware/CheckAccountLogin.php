@@ -20,7 +20,7 @@ class CheckAccountLogin
         if (Auth::check() && Auth::user()) {
             return $next($request);
         }
-        return redirect('login')->with('error','bạn cần đăng nhập để thực hiện chức năng');
+        return redirect()->route('login')->with('error','bạn cần đăng nhập để thực hiện chức năng');
 
     }
 }

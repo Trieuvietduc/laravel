@@ -53,15 +53,14 @@
                                         <p><span>{{ count($product) }}</span> Sản phẩm</p>
                                     </div>
                                     <div class="product-sorting d-flex">
-                                        <p>Sắp xếp</p>
-                                        <form action="#" method="get">
+                                        <form action="{{ route('sortproduct') }}" method="get">
                                             <select name="select" id="sortByselect">
-                                                <option value="value">Highest Rated</option>
-                                                <option value="value">Newest</option>
-                                                <option value="value">Price: $$ - $</option>
-                                                <option value="value">Price: $ - $$</option>
+                                                <option value="0">Sắp xếp</option>
+                                                <option value="1"><a href="" >sản phẩm mới nhất</a></option>
+                                                <option value="2">Giá từ cao đến thấp</option>
+                                                <option value="3">Giá từ thấp đến cao</option>
                                             </select>
-                                            <input type="submit" class="d-none" value="">
+                                            <button type="submit" class="btn">lọc</button>
                                         </form>
                                     </div>
                                 </div>
@@ -76,7 +75,12 @@
                                             <div class="product-img">
                                                 <img src="{{ asset($item->avatar_product) }}" alt=""
                                                     style="height: 250px;width: 250px;">
-
+                                                @if ($item->so_luong == 0)
+                                                    <div
+                                                        class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                        <span>Hết</span>
+                                                    </div>
+                                                @endif
                                                 <div class="product-favourite">
                                                     <a href="#" class="favme fa fa-heart"></a>
                                                 </div>
@@ -116,4 +120,9 @@
             </div>
         </div>
     </section>
+    <script>
+        function sort(id){
+            console.log(id);
+        }
+    </script>
 @endsection

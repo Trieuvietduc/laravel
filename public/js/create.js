@@ -4,6 +4,7 @@ function add() {
     var soluong = document.getElementById('so_luong');
     var danhmuc = document.getElementById('danhmuc');
     var kichthuoc = document.getElementById('kichthuoc');
+    var anh = document.getElementById('avatar_product');
     var mota = document.getElementById('mo_ta');
     var format = /^[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/? ]*$/;
     var a = true
@@ -41,7 +42,7 @@ function add() {
         document.getElementById('don_gia').style.border = "1px solid green";
     }
     if (soluong.value == '') {
-        document.getElementById('error_soluong').innerHTML = 'giá không được để trống';
+        document.getElementById('error_soluong').innerHTML = 'Số lượng không được để trống';
         document.getElementById('don_gia').style.border = "1px solid red ";
         return a = false
     } else {
@@ -64,7 +65,14 @@ function add() {
         document.getElementById('error_kichthuoc').innerHTML = '';
         document.getElementById('kichthuoc').style.border = "1px solid green ";
     }
-
+    if (anh.value == '') {
+        document.getElementById('error_avatar').innerHTML = 'ảnh không được để trống';
+        document.getElementById('avatar_product').style.border = "1px solid red ";
+        return a = false
+    } else {
+        document.getElementById('error_avatar').innerHTML = '';
+        document.getElementById('avatar_product').style.border = "1px solid green ";
+    }
     if (mota.value == '') {
         document.getElementById('error_mota').innerHTML = 'mô tả không được để trống';
         document.getElementById('mo_ta').style.border = "1px solid red ";
@@ -81,6 +89,7 @@ function add() {
         document.getElementById('error_mota').innerHTML = '';
         document.getElementById('mo_ta').style.border = "1px solid green ";
     }
+
     if (mota.length > 255) {
         document.getElementById('error_mota').innerHTML = 'mô tả phải từ 100 đến 255 ký tự';
         document.getElementById('mo_ta').style.border = "1px solid red ";

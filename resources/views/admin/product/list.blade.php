@@ -110,8 +110,13 @@
     </style>
     <div class="container">
         @if (Session::has('thongbao'))
-            <div class="alert alert-success thongbao">
+            <div class="alert alert-success">
                 {{ Session::get('thongbao') }}
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
             </div>
         @endif
         {{-- search --}}
@@ -143,7 +148,7 @@
                             <th>Tên</th>
                             <th>Đơn Giá</th>
                             <th>Khuyến Mại</th>
-                            <th>Số Lượng</th>
+                            <th>Trạng thái</th>
                             <th>Ảnh</th>
                             <th>Danh mục</th>
                             <th colspan="2"></th>
@@ -161,7 +166,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->don_gia }}</td>
                                 <td>{{ $user->khuyen_mai }}</td>
-                                <td>{{ $user->so_luong }}</td>
+                                <td>{{ $user->so_luong==0 ? "Hết hàng": "Còn hàng" }}</td>
                                 <td><img src="{{ asset($user->avatar_product) }}" alt="" width="150px"></td>
                                 <td>
                                     {{ $user->danhmuc->name }}

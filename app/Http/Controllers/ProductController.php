@@ -76,15 +76,18 @@ class ProductController extends Controller
     }
     public function detai(Request $request)
     {
-        if (Auth::user()) {
-            $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
-            $user = Auth::user()->id;
-            $sanpham = Product::where('id', $request->id)->first();
-            $kichthuoc = Product::join('kichthuoc', 'kichthuoc.id', 'product.kich_thuoc')
+        $sanpham = Product::where('id', $request->id)->first();
+        $kichthuoc = Product::join('kichthuoc', 'kichthuoc.id', 'product.kich_thuoc')
                 ->select('kichthuoc.name as name_kichthuoc')
                 ->where('product.kich_thuoc', $sanpham->kich_thuoc)
                 ->first();
-            $binhluan = Binhluan::join('users', 'users.id', '=', 'binhluan.id_user')->select('binhluan.*', 'users.name as name_user')->where('id_product', $request->id)->get();
+        if (Auth::user()) {
+            $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
+            $user = Auth::user()->id;
+            $binhluan = Binhluan::join('users', 'users.id', '=', 'binhluan.id_user')
+                ->select('binhluan.*', 'users.name as name_user')
+                ->where('id_product', $request->id)
+                ->get();
             return view('clinet.san-pham-detail', [
                 'sanpham' => $sanpham,
                 'kichthuoc' => $kichthuoc,
@@ -93,12 +96,6 @@ class ProductController extends Controller
                 'count_giohang' => $count_giohang,
             ]);
         } else {
-            $sanpham = Product::where('id', $request->id)->first();
-            $kichthuoc = Product::join('kichthuoc', 'kichthuoc.id', 'product.kich_thuoc')
-                ->select('kichthuoc.name as name_kichthuoc')
-                ->where('product.kich_thuoc', $sanpham->kich_thuoc)
-                ->first();
-
             $binhluan = Binhluan::where('id_product', $request->id)->get();
             return view('clinet.san-pham-detail', [
                 'sanpham' => $sanpham,
@@ -107,8 +104,36 @@ class ProductController extends Controller
             ]);
         }
     }
-
-
+    public function sort(Request $request)
+    {
+        $danhmuc = Danhmuc::select('id', 'name')->get();
+        $kichthuoc = Kichthuoc::all();
+        if ($request->select == 0) {
+            return back();
+        }
+        if ($request->select == 1) {
+            $product = Product::Orderby('created_at', 'DESC')->select('*')->paginate(10);
+        } elseif ($request->select == 2) {
+            $product = Product::Orderby('don_gia', 'DESC')->select('*')->paginate(10);
+        } elseif ($request->select == 3) {
+            $product = Product::Orderby('don_gia', 'ASC')->select('*')->paginate(10);
+        }
+        if (Auth::user()) {
+            $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
+            return view('clinet.san-pham', [
+                'product' => $product,
+                'danhmuc' => $danhmuc,
+                'kichthuoc' => $kichthuoc,
+                'count_giohang' => $count_giohang,
+            ]);
+        } else {
+            return view('clinet.san-pham', [
+                'product' => $product,
+                'danhmuc' => $danhmuc,
+                'kichthuoc' => $kichthuoc,
+            ]);
+        }
+    }
 
 
 
@@ -120,7 +145,7 @@ class ProductController extends Controller
 
     public function list()
     {
-        $product = Product::select('id', 'name', 'don_gia', 'khuyen_mai', 'so_luong', 'avatar_product', 'id_danhmuc')
+        $product = Product::Orderby('created_at', 'DESC')->select('id', 'name', 'don_gia', 'khuyen_mai', 'so_luong', 'avatar_product', 'id_danhmuc')
             ->with('danhmuc')
             ->paginate(6);
         return view('admin.product.list', [
@@ -145,7 +170,7 @@ class ProductController extends Controller
             $avatar = $request->avatar_product;
             $avatarName = $avatar->hashName();
             $avatarName = $request->name . '_' . $avatarName;
-            $product->avatar_product = $avatar->storeAs('images/users', $avatarName);
+            $product->avatar_product = $avatar->storeAs('images/products', $avatarName);
         }
         //4. Lưu
         $product->save();
@@ -158,6 +183,9 @@ class ProductController extends Controller
     }
     public function deleteall(Request $request)
     {
+        if ($request->all == null) {
+            return  redirect()->route('product_list')->with('error', 'bạn cần chọn sản phẩm muốn xóa');
+        }
         $product = $request->all;
         foreach ($product as $value) {
             Product::destroy($value);
@@ -190,8 +218,11 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
+        if ($search != Product::where('name', 'like', '%' . $search . '%')) {
+            return redirect()->back()->with('error', 'không có sản phẩm nào như bạn vừa tìm!');
+        }
         if (empty($search)) {
-            $product =  Product::select(
+            $product =  Product::Orderby('name', 'DESC')->select(
                 'id',
                 'name',
                 'don_gia',
@@ -200,9 +231,9 @@ class ProductController extends Controller
                 'avatar_product',
                 'id_danhmuc'
             )
-                ->paginate(6);
+                ->paginate(20);
         } else {
-            $product = Product::select(
+            $product = Product::Orderby('name', 'DESC')->select(
                 'id',
                 'name',
                 'don_gia',
@@ -212,7 +243,7 @@ class ProductController extends Controller
                 'id_danhmuc'
             )
                 ->where('name', 'like', '%' . $search . '%')
-                ->paginate(6);
+                ->paginate(20);
         }
         return view('admin.product.list', [
             'product' => $product

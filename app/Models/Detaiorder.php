@@ -14,6 +14,7 @@ class Detaiorder extends Model
         'so_luong_product',
         'name_product',
         'price_order',
-        'id_user'
+        'id_user',
+        'id_order_detai'
     ];
 }

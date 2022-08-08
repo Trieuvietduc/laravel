@@ -31,20 +31,17 @@
             <div class="row" id="all">
                 <div class="col">
                     <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-
-                        <!-- Product 1 -->
-
-
-
                         @foreach ($product as $item)
                             <div class="product-item men">
                                 <input type="hidden" name="so_luong" value="1">
                                 <div class="product discount product_filter">
+
                                     <div class="product_image">
                                         <img src="{{ $item->avatar_product }}" alt="" style="height: 240px">
                                     </div>
                                     <div class="favorite favorite_left"></div>
                                     <div class="product_info">
+
                                         <h6 class="product_name"><a
                                                 href="{{ route('sanpham_detail', $item->id) }}">{{ $item->name }}</a>
                                         </h6>
@@ -152,8 +149,10 @@
                                                             {{ number_format($item->don_gia, 0, ',', '.') }}đ<span>{{ number_format($item->khuyen_mai, 0, ',', '.') }}đ</span>
                                                         </div>
                                                     </div>
-                                                    <div class="red_button add_to_cart_button"><button class="red_button add_to_cart_button" style="border:1px solid red">Thêm vào giỏ hàng</button></div>
-                                                    
+                                                    <div class="red_button add_to_cart_button"><button
+                                                            class="red_button add_to_cart_button"
+                                                            style="border:1px solid red">Thêm vào giỏ hàng</button></div>
+
                                                 </div>
                                             </div>
                                         </div>

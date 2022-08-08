@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order', function (Blueprint $table) {
+        Schema::table('detai_order', function (Blueprint $table) {
             $table->unsignedBigInteger('id_order_detai');
-            $table->foreign('id_order_detai')->references('id')->on('detai_order');
-
+            $table->foreign('id_order_detai')->references('id')->on('order');
         });
     }
 

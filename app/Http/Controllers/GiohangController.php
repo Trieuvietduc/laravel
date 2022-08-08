@@ -6,11 +6,8 @@ use App\Models\Detaiorder;
 use App\Models\Donhang;
 use App\Models\Giohang;
 use App\Models\Product;
-use ArrayObject;
-use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mockery\Undefined;
 
 class GiohangController extends Controller
 {
@@ -65,7 +62,7 @@ class GiohangController extends Controller
                     'product_name' => $product->name,
                 ]);
                 $onecart->save();
-                return redirect()->back();
+                return back();
             } else {
                 foreach ($cart->all() as $value) {
                     if ($user->id == $value->id_user && $product->id == $value->id_product) {
@@ -105,7 +102,6 @@ class GiohangController extends Controller
     }
     public function check(Giohang $giohang)
     {
-        // dd($giohang->all());
         if (count(Giohang::all()) == null) {
             return back()->with('error', 'giỏ hàng của bạn chưa có sản phẩm nào');
         }
@@ -117,20 +113,20 @@ class GiohangController extends Controller
             'count_giohang' => $count_giohang,
             'cart' => $giohang,
             'total' => $total,
-            'totalall' => $totalall
+            'totalall' => $totalall 
         ]);
     }
     public function detail(Request $request)
     {
+        // dd($request->all());
         $giohang = Giohang::where('id_user', Auth::user()->id)->get();
-        $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
         $order = new Donhang();
         $order->fill([
             'price_order' => $request->price_order,
             'id_user' => Auth::user()->id,
             'id_status' => 1,
-            'name' => Auth::user()->name,
-            'email' => Auth::user()->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'sdt' => $request->sdt,
             'address' => $request->address,
             'note' => $request->note,
@@ -144,6 +140,7 @@ class GiohangController extends Controller
                 'name_product' => $value->product_name,
                 'price_order' => $request->total,
                 'id_user' => Auth::user()->id,
+                'id_order_detai' => $order->id
             ]);
             $detai->save();
             $product = Product::where('id', $value->id_product)->get();
@@ -152,21 +149,15 @@ class GiohangController extends Controller
                 $item->save();
             }
         }
-
-
         foreach ($giohang as $item) {
             Giohang::destroy($item->id);
         }
-        $donhang = Donhang::where('id_user', Auth::user()->id)->get();
-        return view('clinet.detai-order', [
-            'count_giohang' => $count_giohang,
-            'donhang' => $donhang,
-        ]);
+        return redirect()->route('view_detai');
     }
     public function viewdetai()
     {
         $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
-        $donhang = Donhang::where('id_user', Auth::user()->id)->get();
+        $donhang = Donhang::Orderby('created_at','DESC')->where('id_user', Auth::user()->id)->get();
         return view('clinet.detai-order', [
             'count_giohang' => $count_giohang,
             'donhang' => $donhang,

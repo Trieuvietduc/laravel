@@ -285,6 +285,21 @@
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-pink">
+                            <div class="inner">
+                                <h3>{{ $handle }}</h3>
+
+                                <p style="color: #ffffff">Đang giao</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="" class="small-box-footer" onclick="add(event,3)"><i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
                     <!-- ./col -->
                 </div>
 
