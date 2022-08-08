@@ -84,14 +84,6 @@
             border: 1px solid #4bb8a9;
         }
 
-        .card-2 {
-            margin-top: 40px !important;
-        }
-
-        .card-header {
-            background-color: #fff;
-            border-bottom: 0px solid #aaaa !important;
-        }
 
         p {
             font-size: 13px;
@@ -124,95 +116,93 @@
             border: 1px solid #aaaa;
         }
 
-        .bell {
-            opacity: 0.5;
-            cursor: pointer;
+
+
+        span {
+            font-size: 20px;
+            text-align: right
         }
 
-        @media (max-width: 767px) {
-            .breadcrumb-item+.breadcrumb-item {
-                padding-left: 0
-            }
+        .textall {
+            padding: 20px
+        }
+
+        .frame {
+            padding: 20px;
+            border: 1px solid #cccccc;
+            background: #fff;
+
+        }
+
+        .tonken {
+            text-align: center;
+            font-size: 25px;
+            padding: 10px
+        }
+
+        .wraper {
+            width: 80%;
+        }
+
+        .thongbao {
+            margin-top: 20px
         }
     </style>
-    <div class=" container-fluid my-5 ">
+    <div class=" container-fluid my-5">
         <div class="row justify-content-center ">
-            <div class="col-xl-10">
-                <div class="card shadow-lg ">
-                    <div class="row  mx-auto justify-content-center text-center">
-                        <div class="col-12 mt-3 ">
-                        </div>
+
+            <div class="wraper">
+                @if (Session::has('thongbao'))
+                    <div class="alert alert-success thongbao" style="text-align: center">
+                        {{ Session::get('thongbao') }}
                     </div>
+                @endif
+                <h2 class="textall" style="text-align: center">Đơn hàng của tôi</h2>
+                <hr class="my-0">
 
-                    <div class="row justify-content-around">
-                        <div class="col-md-5">
-                            @if (Session::has('thongbao'))
-                                <div class="alert alert-success thongbao" style="text-align: center">
-                                    {{ Session::get('thongbao') }}
-                                </div>
-                            @endif
-                            @if (Session::has('error'))
-                                <div class="alert alert-danger" style="text-align: center">
-                                    {{ Session::get('error') }}
-                                </div>
-                            @endif
-                            <div class="card border-0">
-                                <div class="card-header pb-0">
-                                    <h2 class="card-title space " style="text-align: center">Đơn hàng của tôi</h2>
-                                    <hr class="my-0">
-                                </div>
-                                <div class="card-body">
-                                    <div class="row justify-content-between">
-                                        <div class="col-auto mt-0">
-                                            <p><b>Họ và tên: <br> {{ Auth::user()->name }}</b></p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <p><b>Email: <br> {{ Auth::user()->email }}</b> </p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <p class="text-muted mb-2">thông tin đơn hàng</p>
-                                        <b>tổng đơn hàng {{ count($donhang) }}</b>
-                                        <hr class="mt-0">
-                                    </div>
-                                    <div class="row mt-4">
+                <div class="row">
+                    @foreach ($donhang as $item)
+                        <div class="col frame">
+                            <div class="tonken">
+                                #{{ $item->id }}
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="text-muted mb-2">Họ và Tên: <br> {{ Auth::user()->name }}</span><br><br>
+                                    <span class="text-muted mb-2">Địa chỉ : <br>{{ $item->address }}</span><br><br>
+                                    <span class="text-muted mb-2">Số điện thoại: <br>{{ $item->sdt }}</span><br><br>
+                                    <span style="font-size: 17px">Trạng thái: <br> <b>{{ $item->status->name }}</b></span>
 
-                                        @foreach ($donhang as $item)
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p class="text-muted mb-2">giá sản phẩm : {{ $item->price_order }} </p>
-                                                    <p class="text-muted mb-2">ngày tạo đơn {{ $item->created_at }}</p>
-                                                    <p class="text-muted mb-2">Trạng thái
-                                                        <b>{{ $item->status->name }}</b>
-                                                    </p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="text-muted mb-2">số điện thoại : {{ $item->sdt }}</p>
-                                                    <p class="text-muted mb-2">địa chỉ: {{ $item->address }}</p>
-                                                    <p class="text-muted mb-2">ghi chú : {{ $item->note }}</p>
-                                                    <a href="{{ route('view_detai_user', $item->id) }}">
-                                                        <p class="text-muted mb-2"><b>Xem chi tiết đơn hàng</b></p>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col"><a
-                                                        href="{{ route('detai_status', $item->id) }}"><button
-                                                            class="btn btn-danger">Huy đơn
-                                                            hàng</button></a></div>
-                                                <div class="col"><a href="{{ route('detai_status_true', $item->id) }}"><button class="btn btn-primary">Đã
-                                                            nhận được hàng</button></a></div>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted mb-2">Tổng giá hàng: <br> {{ $item->price_order }}</span><br><br>
+                                    <span class="text-muted mb-2">Ngày tạo: {{ $item->created_at }}</span><br><br>
+                                    <span class="text-muted mb-2">Ghi chú: <br>{{ $item->note }}</span><br><br>
+                                    <a href="{{ route('view_detai_user', $item->id) }}">
+                                        <p class="text-muted mb-2"><span><b style="font-size: 17px">Chi tiết đơn
+                                                    hàng</b></span></p>
+                                    </a>
                                 </div>
                             </div>
+                            <div class="row thongbao">
+                                @if ($item->status->name === 'đang xử lý')
+                                    <div class="col"><a href="{{ route('detai_status', $item->id) }}"><button
+                                                class="btn btn-danger">Huy đơn
+                                                hàng</button></a></div>
+                                @elseif($item->status->name === 'đang giao')
+                                    <div class="col"><a href="{{ route('detai_status_true', $item->id) }}"><button
+                                                class="btn btn-primary">Đã
+                                                nhận được hàng</button></a></div>
+                                @endif
+
+
+                            </div>
+
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <br>
-                <div class="col-sm-4"><a href="{{ route('index') }}"><button class="btn btn-warning">Về trang
-                            chủ</button></a></div>
             </div>
-        </div>
+        </div><br><br>
+        <div class="col-sm-4"><a href="{{ route('index') }}"><button class="btn btn-warning">Về trang
+                    chủ</button></a></div>
     @endsection

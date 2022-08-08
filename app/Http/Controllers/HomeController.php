@@ -70,7 +70,6 @@ class HomeController extends Controller
                         'danhmuc' => $danhmuc,
                         'kichthuoc' => $kichthuoc,
                         'count_giohang' => $count_giohang,
-
                     ]);
                 } else {
                     return view('clinet.san-pham', [

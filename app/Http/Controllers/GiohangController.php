@@ -31,68 +31,64 @@ class GiohangController extends Controller
     public function create(Product $product, Request $request, Giohang $cart)
     {
 
-        if (Auth::user()) {
-            $user = Auth::user();
-            if ($request->so_luong > $product->so_luong) {
-                return redirect()->back()->with('thongbao', 'số lượng sản phẩm của cửa hàng không đủ');
-            }
-            if ($product->khuyen_mai != null) {
-                foreach ($cart->all() as $value) {
-                    if ($user->id == $value->id_user && $product->id == $value->id_product) {
-                        $value->fill([
-                            'id_user' => $user->id,
-                            'id_product' => $product->id,
-                            'avatar_product' => $product->avatar_product,
-                            'so_luong' => $value->so_luong + $request->so_luong,
-                            'gia' => $product->khuyen_mai,
-                            'product_name' => $product->name,
-                        ]);
-                        $value->save();
-                        return back();
-                    }
+        $user = Auth::user();
+        if ($request->so_luong > $product->so_luong) {
+            return redirect()->back()->with('thongbao', 'số lượng sản phẩm của cửa hàng không đủ');
+        }
+        if ($product->khuyen_mai != null) {
+            foreach ($cart->all() as $value) {
+                if ($user->id == $value->id_user && $product->id == $value->id_product) {
+                    $value->fill([
+                        'id_user' => $user->id,
+                        'id_product' => $product->id,
+                        'avatar_product' => $product->avatar_product,
+                        'so_luong' => $value->so_luong + $request->so_luong,
+                        'gia' => $product->khuyen_mai,
+                        'product_name' => $product->name,
+                    ]);
+                    $value->save();
+                    return back();
                 }
-                $request->so_luong = $request->so_luong;
-                $onecart = new Giohang();
-                $onecart->fill([
-                    'id_user' => $user->id,
-                    'id_product' => $product->id,
-                    'avatar_product' => $product->avatar_product,
-                    'so_luong' => $request->so_luong,
-                    'gia' => $product->khuyen_mai,
-                    'product_name' => $product->name,
-                ]);
-                $onecart->save();
-                return back();
-            } else {
-                foreach ($cart->all() as $value) {
-                    if ($user->id == $value->id_user && $product->id == $value->id_product) {
-                        $value->fill([
-                            'id_user' => $user->id,
-                            'id_product' => $product->id,
-                            'avatar_product' => $product->avatar_product,
-                            'so_luong' => $value->so_luong + $request->so_luong,
-                            'gia' => $product->don_gia,
-                            'product_name' => $product->name,
-                        ]);
-                        $value->save();
-                        return back();
-                    }
-                }
-                $request->so_luong = $request->so_luong;
-                $onecart = new Giohang();
-                $onecart->fill([
-                    'id_user' => $user->id,
-                    'id_product' => $product->id,
-                    'avatar_product' => $product->avatar_product,
-                    'so_luong' => $request->so_luong,
-                    'gia' => $product->don_gia,
-                    'product_name' => $product->name,
-                ]);
-                $onecart->save();
-                return redirect()->back();
             }
+            // $request->so_luong = $request->so_luong;F
+            $onecart = new Giohang();
+            $onecart->fill([
+                'id_user' => $user->id,
+                'id_product' => $product->id,
+                'avatar_product' => $product->avatar_product,
+                'so_luong' => $request->so_luong,
+                'gia' => $product->khuyen_mai,
+                'product_name' => $product->name,
+            ]);
+            $onecart->save();
+            return back();
         } else {
-            return redirect()->route('login')->with('thongbao', 'bạn cần đăng nhập để mua hàng');
+            foreach ($cart->all() as $value) {
+                if ($user->id == $value->id_user && $product->id == $value->id_product) {
+                    $value->fill([
+                        'id_user' => $user->id,
+                        'id_product' => $product->id,
+                        'avatar_product' => $product->avatar_product,
+                        'so_luong' => $value->so_luong + $request->so_luong,
+                        'gia' => $product->don_gia,
+                        'product_name' => $product->name,
+                    ]);
+                    $value->save();
+                    return back();
+                }
+            }
+            $request->so_luong = $request->so_luong;
+            $onecart = new Giohang();
+            $onecart->fill([
+                'id_user' => $user->id,
+                'id_product' => $product->id,
+                'avatar_product' => $product->avatar_product,
+                'so_luong' => $request->so_luong,
+                'gia' => $product->don_gia,
+                'product_name' => $product->name,
+            ]);
+            $onecart->save();
+            return redirect()->back();
         }
     }
     public function delete(Request $request)
@@ -102,18 +98,18 @@ class GiohangController extends Controller
     }
     public function check(Giohang $giohang)
     {
+        $total = 0;
+        $totalall = 0;
         if (count(Giohang::all()) == null) {
             return back()->with('error', 'giỏ hàng của bạn chưa có sản phẩm nào');
         }
-        $total = 0;
-        $totalall = 0;
         $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
         $giohang = Giohang::where('id_user', Auth::user()->id)->get();
         return view('clinet.order', [
             'count_giohang' => $count_giohang,
             'cart' => $giohang,
             'total' => $total,
-            'totalall' => $totalall 
+            'totalall' => $totalall
         ]);
     }
     public function detail(Request $request)
@@ -138,7 +134,7 @@ class GiohangController extends Controller
                 'id_product' => $value->id_product,
                 'so_luong_product' => $value->so_luong,
                 'name_product' => $value->product_name,
-                'price_order' => $request->total,
+                'price_order' => $value->gia,
                 'id_user' => Auth::user()->id,
                 'id_order_detai' => $order->id
             ]);
@@ -157,7 +153,7 @@ class GiohangController extends Controller
     public function viewdetai()
     {
         $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
-        $donhang = Donhang::Orderby('created_at','DESC')->where('id_user', Auth::user()->id)->get();
+        $donhang = Donhang::Orderby('created_at', 'DESC')->where('id_user', Auth::user()->id)->get();
         return view('clinet.detai-order', [
             'count_giohang' => $count_giohang,
             'donhang' => $donhang,

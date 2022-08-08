@@ -46,16 +46,6 @@ class DonhangController extends Controller
     public function detaiorderstatus(Request $request)
     {
         $donhang = Donhang::where('id', $request->id)->first();
-
-        if ($donhang->id_status == 4) {
-            return back()->with('error', 'đơn hàng này đã hủy rồi');
-        }
-        if ($donhang->id_status == 2) {
-            return back()->with('error', 'đơn hàng đang giao và không thể hủy được');
-        }
-        if ($donhang->id_status == 3) {
-            return back()->with('error', 'đơn hàng đã thành công và không thể hủy được');
-        }
         $donhang->id_status = 4;
         $donhang->save();
         $fisrt = Detaiorder::where('id_user', $donhang->id_user)->get();
@@ -69,16 +59,6 @@ class DonhangController extends Controller
     public function detaiorderstatustrue(Request $request)
     {
         $donhang = Donhang::where('id', $request->id)->first();
-        if ($donhang->id_status == 4) {
-            return back()->with('error', 'đơn hàng này đã hủy và không thể xác nhận thành công');
-        }
-        if ($donhang->id_status == 1) {
-            return back()->with('error', 'đơn hàng này chưa vận chuyển nên bạn không thể bấm thành công');
-        }
-
-        if ($donhang->id_status == 3) {
-            return back()->with('thongbao', 'đơn hàng này đã thành công rồi');
-        }
         $donhang->id_status = 3;
         $donhang->save();
         return back()->with('thongbao', 'cảm ơn bạn đã mua hàng bên tôi');
