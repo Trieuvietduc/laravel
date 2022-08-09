@@ -34,7 +34,8 @@
                         <ul class="top_nav_menu">
 
                             <!-- Currency / Language / My Account -->
-                            @if (Auth::user())
+                            {{-- {{dd(Auth::check())}} --}}
+                            @if ( Auth::user())
                                 <li class="account">
                                     <a href="#">
                                         {{ Auth::user()->name }}
@@ -82,7 +83,7 @@
                         <a href="#">ĐỨC<span>shop</span></a>
                     </div>
                     <nav class="navbar">
-                        <form action="{{route('search_home')}}" method="get" class="form">
+                        <form action="{{ route('search_home') }}" method="get" class="form">
                             <input type="text" name="result" id="" class="" style="height: 35px;">
                             <button class="btn btn-warning" style="height: 35px;">Tìm kiếm</button>
                         </form>

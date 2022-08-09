@@ -34,7 +34,7 @@
                         <ul class="top_nav_menu">
 
                             <!-- Currency / Language / My Account -->
-                            @if (Auth::user())
+                            @if ( Auth::user())
                                 <li class="account">
                                     <a href="#">
                                         {{ Auth::user()->name }}

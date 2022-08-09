@@ -251,7 +251,7 @@
         function check(event, id) {
             event.preventDefault();
             $.ajax({
-                url: 'http://127.0.0.1:8000/one_danhmuc/' + id,
+                url: '{{route('danhmuc')}}',
                 type: 'get',
                 data: {
                     id: id

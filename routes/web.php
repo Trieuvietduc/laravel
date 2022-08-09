@@ -88,7 +88,7 @@ Route::prefix('san-pham')->group(function () {
 });
 
 //danh mục index
-Route::get('one_danhmuc/{id}', [DanhmucController::class, 'one_danhmuc'])->name('danhmuc');
+Route::get('one_danhmuc', [DanhmucController::class, 'one_danhmuc'])->name('danhmuc');
 Route::get('all_danhmuc', [DanhmucController::class, 'all_danhmuc'])->name('all_danhmuc');
 Route::get('danh-muc/{id}', [DanhmucController::class, 'fill_danhmuc'])->name('fill_danhmuc');
 
@@ -177,5 +177,5 @@ Route::middleware([CheckAccountLogin::class])->middleware([CheckAdmin::class])->
 
     // thống kê
     Route::get('thongke/order', [HomeController::class, 'allorder'])->name('orderall');
-    Route::get('thongke/order/complete', [HomeController::class, 'complete'])->name('complete');
+    Route::get('thongke/order/complete/{id}', [HomeController::class, 'complete'])->name('complete');
 });

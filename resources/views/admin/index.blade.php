@@ -41,50 +41,5 @@
             </form>
         </div>
     </div>
-    <script>
-        function add(event, id) {
-            event.preventDefault();
-            var url = "";
-            if (id == 1) {
-                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
-            }
-            if (id == 2) {
-                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
-            }
-            if (id == 3) {
-                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
-            }
-            if (id == 4) {
-                url = "http://127.0.0.1:8000/dashboard/thongke/order/complete/"
-            }
-            $.ajax({
-                url: url,
-                type: 'get',
-                dataType: 'json',
-                data: {
-                    id: id
-                },
-                success: function(data) {
-                    var html = '';
-                    for (var pro of data) {
-
-                        html += '   <tr>',
-                            html += '  <td>' + pro.name + '</td>',
-                            html += '  <td>' + pro.sdt + '</td>',
-                            html += '  <td>' + pro.address + '</td>',
-                            html += '  <td>' + pro.note + '</td>',
-                            html += '  <td>' + pro.price_order + '</td>',
-                            html += '<td> ' + pro.status.name + '</td>',
-                            html += ' </tr>'
-
-                    }
-                    $('.all').html(html);
-                    console.log(data);
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            })
-        }
-    </script>
+    <script src="{{ asset('js/thongke.js') }}"></script>
 @endsection

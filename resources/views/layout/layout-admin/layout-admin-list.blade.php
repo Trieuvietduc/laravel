@@ -289,14 +289,14 @@
                         <!-- small box -->
                         <div class="small-box bg-pink">
                             <div class="inner">
-                                <h3>{{ $handle }}</h3>
+                                <h3>{{ $delivering }}</h3>
 
                                 <p style="color: #ffffff">Đang giao</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="" class="small-box-footer" onclick="add(event,3)"><i
+                            <a href="" class="small-box-footer" onclick="add(event,5)"><i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>

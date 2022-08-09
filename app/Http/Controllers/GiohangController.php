@@ -77,7 +77,7 @@ class GiohangController extends Controller
                     return back();
                 }
             }
-            $request->so_luong = $request->so_luong;
+            // $request->so_luong = $request->so_luong;
             $onecart = new Giohang();
             $onecart->fill([
                 'id_user' => $user->id,

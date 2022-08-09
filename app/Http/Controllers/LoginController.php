@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,9 +60,8 @@ class LoginController extends Controller
     {
         return view('clinet.register');
     }
-    public function checkregister(Request $request)
+    public function checkregister(RegisterRequest $request)
     {
-
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -70,9 +70,6 @@ class LoginController extends Controller
         $user->role_id = 1;
         $user->remember_token = $request->_token;
         $user->status = 1;
-        $this->validate($request, [
-            'email' => 'unique:users',
-        ]);
         $user->save();
         return redirect()->route('login')->with('thongbao', 'Đăng ký thành công');
     }

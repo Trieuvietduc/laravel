@@ -218,9 +218,6 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        if ($search != Product::where('name', 'like', '%' . $search . '%')) {
-            return redirect()->back()->with('error', 'không có sản phẩm nào như bạn vừa tìm!');
-        }
         if (empty($search)) {
             $product =  Product::Orderby('name', 'DESC')->select(
                 'id',
