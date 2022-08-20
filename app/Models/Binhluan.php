@@ -14,8 +14,10 @@ class Binhluan extends Model
         'noidung',
         'id_user',
         'id_product',
+        'likes',
+        'dislike',
     ];
-    public function binhluan(){
-        return $this->hasMany(User::class,'id_user','id');
+    public function users(){
+        return $this->belongsTo(User::class,'id_user','id');
     }
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\KichthuocController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\AdminRequest;
 use App\Http\Middleware\CheckAccountLogin;
 use App\Http\Middleware\CheckAdmin;
 use App\Models\Giohang;
@@ -58,7 +57,8 @@ Route::middleware('guest')->group(function () {
     Route::post('check-register', [LoginController::class, 'checkregister'])->name('check_register');
 });
 
-
+// sản phẩm yêu thích
+Route::post('favorite/{id}', [ProductController::class, 'favorite'])->name('favorite');
 // logout
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -96,12 +96,16 @@ Route::get('danh-muc/{id}', [DanhmucController::class, 'fill_danhmuc'])->name('f
 Route::middleware([CheckAccountLogin::class])->prefix('product')->group(function () {
     Route::post('/binhluan', [BinhluanController::class, 'create'])->name('binhluon_create');
     Route::get('/binhluan/delete/{id}', [BinhluanController::class, 'delete'])->name('binhluan_delete');
+    Route::get('/binhluan/like/{binhluan}', [BinhluanController::class, 'likes'])->name('binhluan_likes');
+    Route::get('/binhluan/dislike/{binhluan}', [BinhluanController::class, 'dislike'])->name('binhluan_dislike');
 });
 
 // giỏ hàng
 Route::middleware([CheckAccountLogin::class])->prefix('gio-hang')->group(function () {
     // thêm vào giỏ hàng
     Route::post('/add/{product}', [GiohangController::class, 'create'])->name('giohang_create');
+    //update số lượng 
+    Route::post('update/{id}',[GiohangController::class,'updatecar'])->name('updatecar');
     // inddexx giỏ hàng
     Route::get('/', [GiohangController::class, 'list'])->name('cart');
     // xóa giỏ hàng

@@ -13,6 +13,11 @@
                 {{ Session::get('thongbao') }}
             </div>
         @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger thongbao">
+                {{ Session::get('error') }}
+            </div>
+        @endif
         <link rel="stylesheet" href="{{ asset('/dist/css/style.css') }}">
         <div class="table-responsive">
             {{-- <span class="kq"></span> --}}

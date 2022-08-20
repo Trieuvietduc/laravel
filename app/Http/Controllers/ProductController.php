@@ -10,6 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Models\Favourite;
 
 class ProductController extends Controller
 {
@@ -18,12 +19,16 @@ class ProductController extends Controller
 
         $danhmuc = Danhmuc::select('id', 'name')->get();
         $product =  Product::all();
+
         if (Auth::user()) {
+            $true = Favourite::where('id_user', Auth::user()->id)->get();
             $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
             return view('index', [
                 'danhmuc' => $danhmuc,
                 'product' => $product,
                 'count_giohang' => $count_giohang,
+                'true' => $true,
+
             ]);
         } else {
             return view('index', [
@@ -78,16 +83,15 @@ class ProductController extends Controller
     {
         $sanpham = Product::where('id', $request->id)->first();
         $kichthuoc = Product::join('kichthuoc', 'kichthuoc.id', 'product.kich_thuoc')
-                ->select('kichthuoc.name as name_kichthuoc')
-                ->where('product.kich_thuoc', $sanpham->kich_thuoc)
-                ->first();
+            ->select('kichthuoc.name as name_kichthuoc')
+            ->where('product.kich_thuoc', $sanpham->kich_thuoc)
+            ->first();
+        // $kichthuoc = Product::with('sizes')->first();
+        // dd($kichthuoc);
         if (Auth::user()) {
             $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
             $user = Auth::user()->id;
-            $binhluan = Binhluan::join('users', 'users.id', '=', 'binhluan.id_user')
-                ->select('binhluan.*', 'users.name as name_user')
-                ->where('id_product', $request->id)
-                ->get();
+            $binhluan = Binhluan::with('users')->get();
             return view('clinet.san-pham-detail', [
                 'sanpham' => $sanpham,
                 'kichthuoc' => $kichthuoc,
@@ -134,7 +138,25 @@ class ProductController extends Controller
             ]);
         }
     }
-
+    // sản phẩm yêu thích
+    public function favorite(Product $product,$id)
+    {
+        dd($id);
+        $model = new Favourite();
+        $model->fill([
+            'id_user' => Auth::user()->id,
+            'id_product' => $product->id,
+            'name' => $product->name,
+            'don_gia' => $product->don_gia,
+            'so_luong' => $product->so_luong,
+            'avatar_product' => $product->avatar_product,
+            'mo_ta' => $product->mo_ta,
+            'khuyen_mai' => $product->khuyen_mai,
+            'id_danhmuc' => $product->id_danhmuc,
+            'kich_thuoc' => $product->kich_thuoc
+        ])->save();
+        return back();
+    }
 
 
 
@@ -145,7 +167,7 @@ class ProductController extends Controller
 
     public function list()
     {
-        $product = Product::Orderby('created_at', 'DESC')->select('id', 'name', 'don_gia', 'khuyen_mai', 'so_luong', 'avatar_product', 'id_danhmuc')
+        $product = Product::Orderby('created_at', 'DESC')->select('*')
             ->with('danhmuc')
             ->paginate(6);
         return view('admin.product.list', [
@@ -154,7 +176,6 @@ class ProductController extends Controller
     }
     public function create()
     {
-
         $danhmuc = Danhmuc::select('id', 'name')->get();
         $kichthuoc = Kichthuoc::select('id', 'name')->get();
         return view('admin.product.create', [
@@ -169,12 +190,11 @@ class ProductController extends Controller
         if ($request->hasFile('avatar_product')) {
             $avatar = $request->avatar_product;
             $avatarName = $avatar->hashName();
-            $avatarName = $request->name . '_' . $avatarName;
-            $product->avatar_product = $avatar->storeAs('images/products', $avatarName);
+            $product->avatar_product = $avatar->storeAs('images/product', $avatarName);
         }
         //4. Lưu
         $product->save();
-        return redirect()->route('product_list');
+        return redirect()->route('product_list')->with('thongbao', 'Thêm sản phẩm thành công');
     }
     public function delete(Request $request)
     {
@@ -194,8 +214,8 @@ class ProductController extends Controller
     }
     public function edit(Request $request)
     {
-        $danhmuc = Danhmuc::all();
-        $kichthuoc = Kichthuoc::all();
+        $danhmuc = Danhmuc::select('*')->get();
+        $kichthuoc = Kichthuoc::select('*')->get();
         $product = Product::where('id', $request->id)->first();
         return view('admin.product.edit', [
             'danhmuc' => $danhmuc,
@@ -203,44 +223,49 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
         $product->fill($request->all());
         if ($request->hasFile('avatar_product')) {
             $avatar = $request->avatar_product;
             $avatarName = $avatar->hashName();
             $avatarName = $product->name . '_' . $avatarName;
-            $product->avatar_product = $avatar->storeAs('images/product', $avatarName);
+            $product->avatar_product = $avatar->storeAs('images/products', $avatarName);
         }
         $product->save();
+        $giohang = Giohang::where('id_product', $product->id)->first();
+        if ($product->khuyen_mai == null) {
+            $giohang->fill([
+                'id_user' => $giohang->id_user,
+                'id_product' => $giohang->id_product,
+                'product_name' => $product->name,
+                'avatar_product' => $product->avatar_product,
+                'so_luong' => $giohang->so_luong,
+                'gia' => $product->don_gia,
+            ])->save();
+        } else {
+            $giohang->fill([
+                'id_user' => $giohang->id_user,
+                'id_product' => $giohang->id_product,
+                'product_name' => $product->name,
+                'avatar_product' => $product->avatar_product,
+                'so_luong' => $giohang->so_luong,
+                'gia' => $product->khuyen_mai,
+            ])->save();
+        }
+
         return redirect()->route('product_list')->with('thongbao', 'Sửa sản phẩm thành công');
     }
     public function search(Request $request)
     {
         $search = $request->search;
         if (empty($search)) {
-            $product =  Product::Orderby('name', 'DESC')->select(
-                'id',
-                'name',
-                'don_gia',
-                'khuyen_mai',
-                'so_luong',
-                'avatar_product',
-                'id_danhmuc'
-            )
-                ->paginate(20);
+            $product =  Product::Orderby('name', 'DESC')->select('*')
+                ->paginate(10);
         } else {
-            $product = Product::Orderby('name', 'DESC')->select(
-                'id',
-                'name',
-                'don_gia',
-                'khuyen_mai',
-                'so_luong',
-                'avatar_product',
-                'id_danhmuc'
-            )
+            $product = Product::Orderby('name', 'DESC')->select('*')
                 ->where('name', 'like', '%' . $search . '%')
-                ->paginate(20);
+                ->paginate(10);
         }
         return view('admin.product.list', [
             'product' => $product

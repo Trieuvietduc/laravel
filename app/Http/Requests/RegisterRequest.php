@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -21,17 +23,31 @@ class RegisterRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        if ($request->register == 1) {
+            return [
+                'name' => 'required',
+                'email' => 'required|unique:users|email',
+                'password' => 'required|min:7|max:10'
+            ];
+        }
         return [
-            'email' => 'unique:users|email',
+            'email' => 'required|email',
+            'password' => 'required'
         ];
     }
     public function messages()
     {
         return [
+            'name.required' => 'Tên không được để trống',
             'email.unique' => 'email này đã tồn tại',
-            'email.email' => 'email không đúng định dạng',
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            
+            'password.required' => 'Mật khẩu không đucợ để trống',
+            'password.min' => 'Mật khẩu từ 6 đến 10 ký tự',
+            'password.max' => 'Mật khẩu từ 6 đến 10 ký tự',
         ];
     }
 }

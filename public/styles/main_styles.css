@@ -1195,21 +1195,9 @@ section
 	visibility: visible;
 	opacity: 1;
 }
-.favorite.active::after
-{
-	font-family: 'FontAwesome';
-	content:'\f004';
-	color: #fe4c50;
-}
-.favorite::after
-{
-	font-family: 'FontAwesome';
-	content:'\f08a';
-}
-.favorite:hover::after
-{
-	color: #fe4c50;
-}
+
+
+
 
 /*********************************
 6. Deal of the week

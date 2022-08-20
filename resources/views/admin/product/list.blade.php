@@ -166,7 +166,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->don_gia }}</td>
                                 <td>{{ $user->khuyen_mai }}</td>
-                                <td>{{ $user->so_luong==0 ? "Hết hàng": "Còn hàng" }}</td>
+                                <td>{{ $user->so_luong == 0 ? 'Hết hàng' : 'Còn hàng' }}</td>
                                 <td><img src="{{ asset($user->avatar_product) }}" alt="" width="150px"></td>
                                 <td>
                                     {{ $user->danhmuc->name }}

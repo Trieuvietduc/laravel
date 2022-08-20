@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/main_styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/core-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     {{-- jquery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

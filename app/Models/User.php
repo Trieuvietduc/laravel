@@ -45,6 +45,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function binhluan(){
-        return $this->belongsTo(Binhluan::class,'id_user','id');
+        return $this->hasMany(Binhluan::class,'id_user','id');
     }
 }

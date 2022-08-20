@@ -15,14 +15,12 @@
                 <div class="col text-center">
                     <div class="new_arrivals_sorting">
                         <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
-                                onclick="check_all(event)">
-                                Tất cả sản phẩm
-                                @foreach ($danhmuc as $item)
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
-                                onclick="check(event,{{ $item->id }})">
-                                {{ $item->name }}
-                            </li>
+
+                            @foreach ($danhmuc as $item)
+                                <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
+                                    onclick="check(event,{{ $item->id }})">
+                                    {{ $item->name }}
+                                </li>
                             @endforeach
                         </ul>
                     </div>
@@ -33,15 +31,35 @@
                     <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
                         @foreach ($product as $item)
                             <div class="product-item men">
-                                <input type="hidden" name="so_luong" value="1">
+
                                 <div class="product discount product_filter">
 
                                     <div class="product_image">
                                         <img src="{{ $item->avatar_product }}" alt="" style="height: 240px">
                                     </div>
-                                    <div class="favorite favorite_left"></div>
-                                    <div class="product_info">
+                                    @if (Auth::user())
+                                        @if ($true)
+                                            @foreach ($true as $val)
+                                                <form action="{{ route('favorite', $item->id) }}" method="post"
+                                                    @csrf
+                                                    name="form">
+                                                    <input type="hidden" name="id" id=""
+                                                        value="{{ $item->id }}">
+                                                    <input type="checkbox" name="checkbox"
+                                                        {{ $val->id_product == $item->id ? 'checked' : '' }}
+                                                        class="check favorite favorite_left">
+                                                </form>
+                                            @endforeach
+                                        @endif
 
+                                        <form action="{{ route('favorite', $item) }}" method="post" name="form">
+                                            <input type="hidden" name="id" id=""
+                                                        value="{{ $item->id }}">
+                                            <input type="checkbox" name="checkbox" class="check favorite favorite_left">
+                                        </form>
+                                    @endif
+
+                                    <div class="product_info">
                                         <h6 class="product_name"><a
                                                 href="{{ route('sanpham_detail', $item->id) }}">{{ $item->name }}</a>
                                         </h6>
@@ -58,10 +76,13 @@
 
                                 <div class="red_button add_to_cart_button"><a
                                         href="{{ route('sanpham_detail', $item->id) }}">Xem chi tiết</a></div>
+
                             </div>
-                            </form>
                         @endforeach
+
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -251,7 +272,7 @@
         function check(event, id) {
             event.preventDefault();
             $.ajax({
-                url: '{{route('danhmuc')}}',
+                url: '{{ route('danhmuc') }}',
                 type: 'get',
                 data: {
                     id: id
@@ -271,7 +292,8 @@
 
                             html += '</div>',
                             html += '<div class="product_info">',
-                            html += '<h6 class="product_name"><a href="http://127.0.0.1:8000/san-pham/detail/' +
+                            html +=
+                            '<h6 class="product_name"><a href="http://noithatvietduc.com/san-pham/detail/' +
                             pro.id + '">' + pro.name + '</a> </h6>',
                             html += '<div class="product_price">$' + new Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
@@ -284,7 +306,7 @@
                             html += '</div>',
                             html += '</div>',
                             html +=
-                            '<div class="red_button add_to_cart_button"><a href="http://127.0.0.1:8000/san-pham/detail/' +
+                            '<div class="red_button add_to_cart_button"><a href="http://noithatvietduc.com/san-pham/detail/' +
                             pro.id + '">Xem chit tiết</a></div>',
                             html += '</div>'
                     }
@@ -298,7 +320,7 @@
             event.preventDefault()
             var id = event.value
             $.ajax({
-                url: 'http://127.0.0.1:8000/all_danhmuc/',
+                url: 'http://noithatvietduc.com/all_danhmuc/',
                 type: 'get',
                 data: {
                     id: id
@@ -318,7 +340,8 @@
 
                             html += '</div>',
                             html += '<div class="product_info">',
-                            html += '<h6 class="product_name"><a href="http://127.0.0.1:8000/san-pham/detail/' +
+                            html +=
+                            '<h6 class="product_name"><a href="http://noithatvietduc.com/san-pham/detail/' +
                             pro.id + '">' + pro.name + '</a> </h6>',
                             html += '<div class="product_price">$' + new Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
@@ -331,7 +354,7 @@
                             html += '</div>',
                             html += '</div>',
                             html +=
-                            '<div class="red_button add_to_cart_button"><a href="http://127.0.0.1:8000/san-pham/detail/' +
+                            '<div class="red_button add_to_cart_button"><a href="http://noithatvietduc.com/san-pham/detail/' +
                             pro.id + '">Xem chi tiết</a></div>',
                             html += '</div>'
                     }
@@ -340,5 +363,8 @@
                 }
             })
         }
+        $('.check').click(function() {
+            document.forms['form'].submit();
+        })
     </script>
 @endsection

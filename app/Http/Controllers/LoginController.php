@@ -15,21 +15,23 @@ class LoginController extends Controller
     {
         return view('clinet.login');
     }
-    public function checklogin(Request $request)
+    public function checklogin(RegisterRequest $request)
     {
         $remeber = $request->checkbox;
         if ($remeber == 'on') {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remeber)) {
-                if (Auth::check() == true && Auth::user()->role_id == 1) {
+                if (Auth::user()->role_id == 1) {
                     if (Auth::user()->status == 1) {
                         return redirect()->route('index');
                     } else {
+                        Auth::logout();
                         return redirect()->route('login')->with('error', 'tài khoản  đã bị khóa');
                     }
                 } else {
                     if (Auth::user()->status == 1) {
                         return redirect()->route('dashboard');
                     } else {
+                        Auth::logout();
                         return redirect()->route('login')->with('error', 'tài khoản  đã bị khóa');
                     }
                 }
@@ -38,16 +40,18 @@ class LoginController extends Controller
             }
         } else {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                if (Auth::check() == true && Auth::user()->role_id == 1) {
+                if (Auth::user()->role_id == 1) {
                     if (Auth::user()->status == 1) {
                         return redirect()->route('index');
                     } else {
+                        Auth::logout();
                         return redirect()->route('login')->with('error', 'tài khoản  đã bị khóa');
                     }
                 } else {
                     if (Auth::user()->status == 1) {
                         return redirect()->route('dashboard');
                     } else {
+                        Auth::logout();
                         return redirect()->route('login')->with('error', 'tài khoản  đã bị khóa');
                     }
                 }

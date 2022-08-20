@@ -15,11 +15,11 @@
                     <h5 class="text-center mb-4">Thêm sản phẩm</h5>
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <ul>
+                        
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    {{ $error }}
                                 @endforeach
-                            </ul>
+                           
                         </div>
                     @endif
                     <form class="form-card" action="{{ route('product_update', $product) }}" method="POST"
@@ -102,7 +102,7 @@
             </div>
         </div>
     </div>
-    {{-- <script src="{{ asset('js/create.js') }}"></script> --}}
+    <script src="{{ asset('js/create.js') }}"></script>
 
 
 @endsection

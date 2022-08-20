@@ -22,4 +22,7 @@ class Product extends Model
     public function danhmuc(){
         return $this->belongsTo(Danhmuc::class,'id_danhmuc','id');
     }
+    public function sizes(){
+        return $this->belongsTo(Product::class,'id_kichthuoc','id');
+    }
 }

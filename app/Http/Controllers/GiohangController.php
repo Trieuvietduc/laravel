@@ -39,12 +39,7 @@ class GiohangController extends Controller
             foreach ($cart->all() as $value) {
                 if ($user->id == $value->id_user && $product->id == $value->id_product) {
                     $value->fill([
-                        'id_user' => $user->id,
-                        'id_product' => $product->id,
-                        'avatar_product' => $product->avatar_product,
                         'so_luong' => $value->so_luong + $request->so_luong,
-                        'gia' => $product->khuyen_mai,
-                        'product_name' => $product->name,
                     ]);
                     $value->save();
                     return back();
@@ -66,12 +61,7 @@ class GiohangController extends Controller
             foreach ($cart->all() as $value) {
                 if ($user->id == $value->id_user && $product->id == $value->id_product) {
                     $value->fill([
-                        'id_user' => $user->id,
-                        'id_product' => $product->id,
-                        'avatar_product' => $product->avatar_product,
                         'so_luong' => $value->so_luong + $request->so_luong,
-                        'gia' => $product->don_gia,
-                        'product_name' => $product->name,
                     ]);
                     $value->save();
                     return back();
@@ -100,7 +90,8 @@ class GiohangController extends Controller
     {
         $total = 0;
         $totalall = 0;
-        if (count(Giohang::all()) == null) {
+        $true = Giohang::where('id_user', Auth::user()->id)->get();
+        if (count($true) == null) {
             return back()->with('error', 'giỏ hàng của bạn chưa có sản phẩm nào');
         }
         $count_giohang = Giohang::where('id_user', Auth::user()->id)->get();
@@ -158,5 +149,14 @@ class GiohangController extends Controller
             'count_giohang' => $count_giohang,
             'donhang' => $donhang,
         ]);
+    }
+    public function updatecar(Request $request)
+    {
+        $car = Giohang::where('id', $request->id)->first();
+        $car->fill([
+            'so_luong' => $request->so_luong
+        ]);
+        $car->save();
+        return back()->with('thongbao', 'Cập nhật thành công');
     }
 }

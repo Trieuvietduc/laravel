@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('avatar_product');
             $table->string('mo_ta');
             $table->integer('khuyen_mai')->nullable();
-            $table->unsignedBigInteger('id_danhmuc');
-            $table->foreign('id_danhmuc')->references('id')->on('danhmuc');
+            $table->integer('id_danhmuc');
+            // $table->foreign('id_danhmuc')->references('id')->on('danhmuc');
             $table->unsignedBigInteger('kich_thuoc');
             $table->timestamps();
         });

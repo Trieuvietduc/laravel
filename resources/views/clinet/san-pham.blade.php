@@ -56,7 +56,7 @@
                                         <form action="{{ route('sortproduct') }}" method="get">
                                             <select name="select" id="sortByselect">
                                                 <option value="0">Sắp xếp</option>
-                                                <option value="1"><a href="" >sản phẩm mới nhất</a></option>
+                                                <option value="1"><a href="">sản phẩm mới nhất</a></option>
                                                 <option value="2">Giá từ cao đến thấp</option>
                                                 <option value="3">Giá từ thấp đến cao</option>
                                             </select>
@@ -81,6 +81,7 @@
                                                         <span>Hết</span>
                                                     </div>
                                                 @endif
+                                                
                                                 <div class="product-favourite">
                                                     <a href="#" class="favme fa fa-heart"></a>
                                                 </div>
@@ -121,7 +122,7 @@
         </div>
     </section>
     <script>
-        function sort(id){
+        function sort(id) {
             console.log(id);
         }
     </script>

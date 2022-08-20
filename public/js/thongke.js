@@ -2,19 +2,19 @@ function add(event, id) {
     event.preventDefault();
     var url = "";
     if (id == 1) {
-        url = "http://localhost:8000/dashboard/thongke/order/complete/" +id
+        url = "http://noithatvietduc.com/dashboard/thongke/order/complete/" +id
     }
     if (id == 2) {
-        url = "http://localhost:8000/dashboard/thongke/order/complete/"+id
+        url = "http://noithatvietduc.com/dashboard/thongke/order/complete/"+id
     }
     if (id == 3) {
-        url = "http://localhost:8000/dashboard/thongke/order/complete/"+id
+        url = "http://noithatvietduc.com/dashboard/thongke/order/complete/"+id
     }
     if (id == 4) {
-        url = "http://localhost:8000/dashboard/thongke/order/complete/"+id
+        url = "http://noithatvietduc.com/dashboard/thongke/order/complete/"+id
     }
     if (id == 5) {
-        url = "http://localhost:8000/dashboard/thongke/order/complete/"+id
+        url = "http://noithatvietduc.com/dashboard/thongke/order/complete/"+id
     }
     $.ajax({
         url: url,

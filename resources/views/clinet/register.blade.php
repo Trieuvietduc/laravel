@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Register</title>
+    <title>Đăng ký</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="img js-fullheight" style="background-image: url(https://noithatnamgia.com/uploads/bnc.jpg);">
+<body class="img js-fullheight" style="background-image: url(https://file.vfo.vn/hinh/2015/12/hinh-nen-noi-that-dep-nhat-cho-may-tinh-27.jpg);">
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -35,31 +35,28 @@
                                 {{ Session::get('thongbao') }}
                             </div>
                         @endif
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}
-                                @endforeach
-                            </div>
-                        @endif
                         </div>
                         
                         <form action="{{ route('check_register') }}" class="signin-form" method="post" name="form">
                             @csrf
+                            <input type="hidden" name="register" id="" value="1">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="name" name="name"
                                     placeholder="name" value="{{old('name')}}">
                                 <span id="kq" style="margin-left: 10px"></span>
+                                <span>{{ $errors->first('name') }}</span>
                             </div>
                             <div class="form-group">
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="email" value="{{old('email')}}">
                                 <span id="kq_email" style="margin-left: 10px"></span>
+                                <span>{{ $errors->first('email') }}</span>
                             </div>
                             <div class="form-group">
                                 <input type="password" id="password" name="password" class="form-control"
                                     placeholder="Password" value="{{old('password')}}">
                                 <span id="kq_pass" style="margin-left: 10px"></span>
+                                <span>{{ $errors->first('password') }}</span>
                             </div>
                             <div class="form-group">
                                 <select name="sex" id="sex" placeholder="Giới tính" class="form-control">
@@ -70,7 +67,7 @@
                                 <span id="kq_sex" style="margin-left: 10px"></span>
                             </div>
                             <div class="form-group">
-                                <button type="button" class="form-control btn btn-primary submit px-3"
+                                <button type="submit" class="form-control btn btn-primary submit px-3"
                                     onclick="add()">Register</button>
                             </div>
                             <div class="form-group d-md-flex">

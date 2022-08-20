@@ -3,7 +3,7 @@ $('.search').keyup(function() {
     console.log(text);
     $.ajax({
         type: 'get',
-        url: 'http://127.0.0.1:8000/dashboard/product/search',
+        url: 'noithatvietduc.com/dashboard/product/search',
         data: {
             search: text
         },
@@ -24,7 +24,7 @@ $('.search').keyup(function() {
                     html += ' <td>' + pro.don_gia + '</td>',
                     html += ' <td>' + pro.khuyen_mai + '</td>',
                     html += ' <td>' + pro.so_luong + '</td>',
-                    html += ' <td><img src="http://127.0.0.1:8000/' + pro.avatar_product +
+                    html += ' <td><img src="http://noithatvietduc.com/' + pro.avatar_product +
                     '" alt="" width="150px"></td>',
                     html += '<td> ' + pro.id_danhmuc + '</td>',
                     html += ' <td><a href="dashboard/product/edit/ ' + pro.id +

@@ -77,28 +77,48 @@
         @foreach ($binhluan as $item)
             <div class="media">
                 <div class="media-body">
-                    <h4 class="media-heading id_user">{{ $item->name_user }}</h4>
+                    <h6 class="media-heading id_user">{{ $item->users->name }}</h6>
                     <p class="noidung1">{{ $item->noidung }}</p>
                     <div class="row" style="margin-left: 20px">
                         <div class="col-1.6" style="margin-right: 10px">
                             <div class="date"><i
-                                    class="fa fa-calendar"style="margin-right: 5px"></i>{{ $item->created_at }}</div>
+                                    class="fa fa-calendar"style="margin-right: 5px"></i>{{ date_format($item->created_at, 'Y/m/d') }}
+                            </div>
                         </div>
                         <div class="col-1.5 xoa">
                             @if (Auth::user())
-                                @if ($item->id_user == Auth::user()->id && Auth::user() != null)
+                                @if ($item->id_user == Auth::user()->id)
                                     <div class=""><a href="{{ route('binhluan_delete', $item->id) }}"
-                                            onclick="return confirm('bạn có chắc chắn muốn xóa k')"
-                                            style="color: #457">Xóa</a></div>
+                                            onclick="return confirm('bạn có chắc chắn muốn xóa k')" style="color: #457"><i
+                                                class="fas fa-trash-alt"></i></a><a
+                                            href="{{ route('binhluan_likes', $item) }}"style="color: #457; margin-left: 5px"><i
+                                                class="fas fa-thumbs-up"
+                                                style="margin-right: 5px"></i>{{ $item->likes }}</a><a
+                                            href="{{ route('binhluan_dislike', $item) }}"style="color: #457; margin-left: 5px"><i
+                                                class="fas fa-thumbs-down"
+                                                style="margin-right: 5px"></i>{{ $item->dislike }}</a></div>
                                 @else
-                                    <div class=""><a href=""style="color: #457">like</a></div>
+                                    <div class=""><a
+                                            href="{{ route('binhluan_likes', $item) }}"style="color: #457; margin-left: 5px"><i
+                                                class="fas fa-thumbs-up"
+                                                style="margin-right: 5px"></i>{{ $item->likes }}</a><a
+                                            href="{{ route('binhluan_dislike', $item) }}"style="color: #457; margin-left: 5px"><i
+                                                class="fas fa-thumbs-down"
+                                                style="margin-right: 5px"></i>{{ $item->dislike }}</a></div>
                                 @endif
                             @else
-                                <div class=""><a href=""style="color: #457">like</a></div>
+                                <div class="">
+                                    <a href="{{ route('binhluan_likes', $item) }}"style="color: #457; margin-left: 5px"><i
+                                            class="fas fa-thumbs-up"
+                                            style="margin-right: 5px"></i>{{ $item->likes }}</a><a
+                                        href="{{ route('binhluan_dislike', $item) }}"style="color: #457; margin-left: 5px"><i
+                                            class="fas fa-thumbs-down"
+                                            style="margin-right: 5px"></i>{{ $item->dislike }}</a>
+                                </div>
                             @endif
                             <br>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -110,7 +130,7 @@
         <form class="fff">
             <fieldset>
                 <div class="form-group">
-                    <input type="hidden" class="user" value="{{ isset($user) ? $user: '' }}">
+                    <input type="hidden" class="user" value="{{ isset($user) ? $user : '' }}">
                     <input type="hidden" class="product" value="{{ $sanpham->id }}">
                     <textarea class="form-control noidung" id="message" placeholder="Your message" name="noidung"></textarea>
                 </div>

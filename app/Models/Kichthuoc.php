@@ -14,4 +14,7 @@ class Kichthuoc extends Model
         'name',
         'id_product',
     ];
+    public function product(){
+        return $this->hasMany(Kichthuoc::class,'id_kichthuoc','id');
+    }
 }

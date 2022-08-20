@@ -75,7 +75,18 @@ class DanhmucController extends Controller
     }
     public function delete(Request $request)
     {
+        if ($request->id == 7) {
+            return back()->with('error', 'Danh mục này không được xóa');
+        }
+        $product = Product::where('id_danhmuc', $request->id)
+            ->select('*')->get();
+        // dd($product);
+        foreach ($product as $val) {
+            $val->id_danhmuc = 7;
+            $val->save();
+        }
         Danhmuc::destroy($request->id);
+
         return redirect()->route('danhmuc_list')->with('thongbao', 'Xóa  danh mục thành công');
     }
 }

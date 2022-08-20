@@ -20,7 +20,7 @@
     </style>
 </head>
 
-<body class="img js-fullheight" style="background-image: url(https://noithatnamgia.com/uploads/bnc.jpg);">
+<body class="img js-fullheight" style="background-image: url(https://file.vfo.vn/hinh/2015/12/hinh-nen-noi-that-dep-nhat-cho-may-tinh-27.jpg);">
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">

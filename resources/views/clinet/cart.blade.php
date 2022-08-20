@@ -30,9 +30,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($giohang as $item)
-                                    <input type="hidden" name="" id=""
-                                        value="{{ $total = $item->so_luong * $item->gia }}">
-                                    <input type="hidden" name="" id="" value="{{ $totalall += $total }}">
+                                    <input type="hidden" value="{{ $total = $item->so_luong * $item->gia }}">
+                                    <input type="hidden" value="{{ $totalall += $total }}">
 
                                     <tr>
                                         <td class="cart__product__item">
@@ -44,9 +43,13 @@
                                         </td>
                                         <td class="cart__price">{{ number_format($item->gia, 0, ',', '.') }}đ</td>
                                         <td class="cart__quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="{{ $item->so_luong }}">
-                                            </div>
+                                            <form action="{{ route('updatecar', $item->id) }}" method="post">
+                                                @csrf
+                                                <div class="pro-qty">
+                                                    <input type="number" min="1" name="so_luong" value="{{ $item->so_luong }}">
+                                                </div>
+                                                <button class="btn">Cập nhật</button>
+                                            </form>
                                         </td>
                                         <td class="cart__total">${{ number_format($total, 0, ',', '.') }}đ</td>
 
@@ -65,21 +68,18 @@
                         <a href="{{ route('index') }}">Tiếp tục mua sắm</a>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn update__btn">
-                        <a href="#"><span class="icon_loading"></span>Cập nhật giỏ hàng</a>
-                    </div>
+                
+
+            </div>
+            <div class="">
+                <div class="cart__total__procced">
+                    <h6>TỔNG GIỎ HÀNG</h6>
+                    <ul>
+                        <li>Tổng tất cả <span>{{ number_format($totalall, 0, ',', '.') }}đ</span></li>
+                    </ul>
+                    <button class="btn btn-warning"><a href="{{ route('check_order') }}">Tiếp tục</a> </button>
                 </div>
             </div>
-                <div class="">
-                    <div class="cart__total__procced">
-                        <h6>TỔNG GIỎ HÀNG</h6>
-                        <ul>
-                            <li>Tổng tất cả <span>{{ number_format($totalall, 0, ',', '.') }}đ</span></li>
-                        </ul>
-                        <button class="btn btn-warning"><a href="{{ route('check_order') }}">Tiếp tục</a> </button>
-                    </div>
-                </div>
         </div>
     </section>
 @endsection
